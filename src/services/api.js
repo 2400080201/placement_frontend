@@ -1,15 +1,9 @@
 import axios from 'axios'
 
-// Get backend URL from environment variable
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = 'https://placementbackend-production-0075.up.railway.app'
 
-// Optional: Debug (remove later if not needed)
-console.log("API BASE URL:", baseURL)
-
-// Local storage key
 export const USER_STORAGE_KEY = 'user'
 
-// Role-based routing
 export const ROLE_HOME = {
   STUDENT: '/dashboard',
   EMPLOYER: '/employer/dashboard',
@@ -18,22 +12,61 @@ export const ROLE_HOME = {
   PLACEMENT_OFFICER: '/po/dashboard',
 }
 
-// Axios instance
 export const api = axios.create({
-  baseURL: baseURL,
+  baseURL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
-// Example API functions (optional - keep if you already use them)
-
-export const login = (data) => {
-  return api.post('/api/auth/login', data)
+export async function getAdminStats() {
+  const { data } = await api.get('/api/admin/stats')
+  return data
 }
 
-export const register = (data) => {
-  return api.post('/api/auth/register', data)
+export async function getAdminUsers() {
+  const { data } = await api.get('/api/admin/users')
+  return data
 }
 
-// Add more APIs as needed...
+export async function createAdminUser(payload) {
+  const { data } = await api.post('/api/admin/users', payload)
+  return data
+}
+
+export async function deleteAdminUser(userId) {
+  const { data } = await api.delete(`/api/admin/users/${userId}`)
+  return data
+}
+
+export async function getAdminJobs() {
+  const { data } = await api.get('/api/admin/jobs')
+  return data
+}
+
+export async function deleteAdminJob(jobId) {
+  const { data } = await api.delete(`/api/admin/jobs/${jobId}`)
+  return data
+}
+
+export async function getAdminPlacements() {
+  const { data } = await api.get('/api/admin/placements')
+  return data
+}
+
+export function normalizeRole(role) {
+  if (role == null) return ''
+  let r = String(role).trim().toUpperCase()
+  if (r.startsWith('ROLE_')) r = r.slice(5)
+  return r
+}
+
+export async function login(payload) {
+  const { data } = await api.post('/api/auth/login', payload)
+  return data
+}
+
+export async function register(payload) {
+  const { data } = await api.post('/api/auth/register', payload)
+  return data
+}
