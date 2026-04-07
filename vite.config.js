@@ -3,15 +3,14 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
   server: {
     host: true
   },
   preview: {
     host: true,
-    allowedHosts: true
+    allowedHosts: [
+      'placementfrontend-production.up.railway.app'
+    ]
   }
 })
